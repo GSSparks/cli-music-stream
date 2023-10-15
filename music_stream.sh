@@ -15,17 +15,17 @@ initialize_json_file() {
     echo "JSON file does not exist. Creating one in $JSON_FILE..."
     jsonfile='{
       "streams": {
-        "951": "https://ice64.securenetsystems.net/WAJI?playSessionID=8882F088-FBC7-F008-2C64ACB2C771047E",
-        "1039": "https://prod-54-90-118-66.amperwave.net/adamsradio-wwfwfmaac-ibc1?",
+        "WAJI": "https://ice64.securenetsystems.net/WAJI",
+        "Wayne": "https://prod-54-90-118-66.amperwave.net/adamsradio-wwfwfmaac-ibc1?",
         "80s80s": "http://streams.80s80s.de/web/mp3-192/streams.80s80s.de/",
         "90s90s": "http://streams.90s90s.de/grunge/mp3-192/streams.90s90s.de/",
-        "bluegrass": "https://ice24.securenetsystems.net/WAMU",
-        "country": "http://185.33.21.112/ccountry_mobile_mp3",
-        "numetal": "http://stream.revma.ihrhls.com/zc9483",
-        "oldies": "http://46.105.122.141:9676/;",
-        "vinyl": "https://icecast.walmradio.com:8443/classic"
+        "Bluegrass": "https://ice24.securenetsystems.net/WAMU",
+        "Country": "http://185.33.21.112/ccountry_mobile_mp3",
+        "Numetal": "http://stream.revma.ihrhls.com/zc9483",
+        "Oldies": "http://46.105.122.141:9676/;",
+        "Vinyl": "https://icecast.walmradio.com:8443/classic"
       },
-      "lastplayed": "951"
+      "lastplayed": "WAJI"
     }'
     # Create a sample JSON file with an empty object {}
     echo $jsonfile > "$JSON_FILE"
@@ -63,10 +63,13 @@ add_stream() {
     echo "Stream with key '$key' already exists. Use 'update' to change it."
     exit 1
   fi
+
   tmpJson=$(cat $JSON_FILE)
   jq --arg key "$key" --arg url "$url" '.streams[$key] = $url' <<< "$tmpJson" > /tmp/music_stream_tmp.json
   mv /tmp/music_stream_tmp.json "$JSON_FILE"
   echo "Stream added: $key -> $url"
+
+  restart_stream
 }
 
 # Function to remove an existing stream
@@ -86,8 +89,9 @@ remove_stream() {
   tmpJson=$(cat $JSON_FILE)
   jq --arg key "$key" 'del(.streams[$key])' <<< "$tmpJson" > /tmp/music_stream_tmp.json
   mv /tmp/music_stream_tmp.json "$JSON_FILE"
-
   echo "Stream $key has been removed"
+
+  restart_stream
 }
 
 # Function to update an existing stream
@@ -108,8 +112,9 @@ update_stream() {
   tmpJson=$(cat $JSON_FILE)
   jq --arg key "$key" --arg url "$url" '.streams[$key] = $url' <<< "$tmpJson" > /tmp/music_stream_tmp.json
   mv /tmp/music_stream_tmp.json "$JSON_FILE"
-
   echo "Stream updated: $key -> $url"
+
+  restart_stream
 }
 
 # Define variables
@@ -175,6 +180,12 @@ stop_stream() {
   fi
 }
 
+restart_stream() {
+  local caller=""
+  stop_stream
+  start_stream $last_selected_stream
+}
+
 # Function to get the next stream
 next_stream() {
   is_playing
@@ -193,7 +204,6 @@ next_stream() {
   # If there is no next stream, start the first one
   start_stream $(echo "${!streams[@]}" | awk '{print $1}')
 }
-
 
 # Function to get the previous stream
 prev_stream() {
