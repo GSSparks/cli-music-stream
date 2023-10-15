@@ -20,15 +20,15 @@ When you first run the script, it will create a `stream.json` file in your `.con
 ```
 }
   "streams": {
-    "951": "https://ice64.securenetsystems.net/WAJI?playSessionID=8882F088-FBC7-F008-2C64ACB2C771047E",
-    "1039": "https://prod-54-90-118-66.amperwave.net/adamsradio-wwfwfmaac-ibc1?",
+    "WAJI": "https://ice64.securenetsystems.net/WAJI?playSessionID=8882F088-FBC7-F008-2C64ACB2C771047E",
+    "Wayne": "https://prod-54-90-118-66.amperwave.net/adamsradio-wwfwfmaac-ibc1?",
     "80s80s": "http://streams.80s80s.de/web/mp3-192/streams.80s80s.de/",
     "90s90s": "http://streams.90s90s.de/grunge/mp3-192/streams.90s90s.de/",
-    "bluegrass": "https://ice24.securenetsystems.net/WAMU",
-    "country": "http://185.33.21.112/ccountry_mobile_mp3",
-    "numetal": "http://stream.revma.ihrhls.com/zc9483",
-    "oldies": "http://46.105.122.141:9676/;",
-    "vinyl": "https://icecast.walmradio.com:8443/classic"
+    "Bluegrass": "https://ice24.securenetsystems.net/WAMU",
+    "Country": "http://185.33.21.112/ccountry_mobile_mp3",
+    "Numetal": "http://stream.revma.ihrhls.com/zc9483",
+    "Oldies": "http://46.105.122.141:9676/;",
+    "Vinyl": "https://icecast.walmradio.com:8443/classic"
   },
   "lastplayed": "80s80s"
 }
@@ -43,6 +43,8 @@ Let's say you find a radio stream called WALM - Old Time Radio at https://icecas
 You will add it like such:
 `./music_stream add OTR https://icecast.walmradio.com:8443/otr`.
 And now you can play the stream by typing `./music_stream.sh play OTR` into the command line.
+
+NOTE: The stream names can not contain spaces.
 
 ### Other ways to use this script
 I'm calling this script with hotkeys.  By pressing a keycombo I can play and stop the stream
